@@ -31,7 +31,6 @@ public class TestTeleOp extends LinearOpMode{
             double backLeftPower = (Math.pow((y - x + rx),3) * 0.8) / denominator;
             double frontRightPower = (Math.pow((y - x - rx),3) * 0.8) / denominator;
             double backRightPower = (Math.pow((y + x - rx),3) * 0.8) / denominator;
-
             motorFrontLeft.setPower(frontLeftPower);
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);

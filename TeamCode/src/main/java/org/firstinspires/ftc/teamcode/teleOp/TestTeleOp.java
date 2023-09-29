@@ -10,10 +10,10 @@ public class TestTeleOp extends LinearOpMode{
     public void runOpMode() throws InterruptedException{
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("left");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("bLeft");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("right");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("bRight");
+        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        DcMotor motorBackLeft = hardwareMap.dcMotor.get("backLeft");
+        DcMotor motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        DcMotor motorBackRight = hardwareMap.dcMotor.get("backRight");
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);

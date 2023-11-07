@@ -12,6 +12,7 @@ public class TestAutonomous extends LinearOpMode{
     public void waitForStart() {
         super.waitForStart();
     }
+
     @Override
     public void runOpMode() throws InterruptedException{
         FirstCenterStage.run(this);

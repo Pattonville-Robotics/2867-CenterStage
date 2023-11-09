@@ -9,6 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class TestAutonomous extends LinearOpMode{
     @Override
+    public void waitForStart() {
+        super.waitForStart();
+    }
+
+    @Override
     public void runOpMode() throws InterruptedException{
         FirstCenterStage.run(this);
     }

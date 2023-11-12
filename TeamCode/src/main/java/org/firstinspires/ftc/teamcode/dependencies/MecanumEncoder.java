@@ -54,16 +54,16 @@ public class MecanumEncoder {
                 backRightTicks = -ticksToTravel;
                 break;
             case RIGHT:
-                frontLeftTicks = ticksToTravel;
-                frontRightTicks = -ticksToTravel;
-                backLeftTicks = -ticksToTravel;
-                backRightTicks = ticksToTravel;
-                break;
-            case LEFT:
                 frontLeftTicks = -ticksToTravel;
                 frontRightTicks = ticksToTravel;
                 backLeftTicks = ticksToTravel;
                 backRightTicks = -ticksToTravel;
+                break;
+            case LEFT:
+                frontLeftTicks = ticksToTravel;
+                frontRightTicks = -ticksToTravel;
+                backLeftTicks = -ticksToTravel;
+                backRightTicks = ticksToTravel;
                 break;
             default:
                 throw new IllegalArgumentException("Direction must be FORWARD, BACKWARD, LEFT, or RIGHT");
@@ -198,8 +198,8 @@ public class MecanumEncoder {
     public double degreesToInches(double degrees){
         return (this.rP.wheelBaseCircumference) * (degrees/360);
     }
-    public int inchesToTicks(double inches){
-        return (int)((inches / this.rP.wheelCircumference) * this.rP.ticks);
+    public int inchesToTicks(double inches){                                                       // constant required for distances to be correct
+        return (int)((inches / this.rP.wheelCircumference) * this.rP.ticks * this.rP.driveGearRatio * 8/5);
     }
 
     public void resetEncoders(){

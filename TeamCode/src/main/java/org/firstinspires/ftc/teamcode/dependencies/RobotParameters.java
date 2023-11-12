@@ -17,6 +17,8 @@ public class RobotParameters {
         this.backLeftMotor = bl;
         this.ticks = t;
         this.wheelRadius = wheelRadius;
+        this.driveGearRatio = driveGearRatio;
+
         this.wheelCircumference = Math.PI*2*wheelRadius;
 
 //        this.linearSlide = LS;
@@ -39,6 +41,7 @@ public class RobotParameters {
         this.backLeftMotor = bl;
         this.ticks = t;
         this.wheelRadius = wheelRadius;
+        this.driveGearRatio = driveGearRatio;
         this.wheelCircumference = Math.PI*2*wheelRadius;
         this.linearSlide = LS;
         this.wheelBaseRadius = wheelBaseRadius;

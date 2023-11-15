@@ -9,4 +9,14 @@ public class PositionVector {
         this.ypos = ypos;
         this.heading = heading;
     }
+
+    public double getXPOS() {
+        return xpos;
+    }
+    public double getYPOS(){
+        return ypos;
+    }
+    public double getHeading(){
+        return heading;
+    }
 }

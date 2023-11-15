@@ -19,9 +19,11 @@ public class MecanumEncoder {
     private LinearOpMode linearOpMode;
     private BNO055IMU imu;
     private DcMotor.RunMode frontLeftMode, frontRightMode, backLeftMode, backRightMode;
+    private PositionVector position;
     private static final double COS_135 = Math.cos(3 * Math.PI / 4);
     private static final double SIN_135 = -COS_135;
     private static final double DEG_45 = Math.PI / 4;
+    private static final int DEGREE_OF_ERROR = 30;
     public static final int TARGET_REACHED_THRESHOLD = 16;
 
     public MecanumEncoder(RobotParameters robotParameters, LinearOpMode linearOpMode){
@@ -29,6 +31,15 @@ public class MecanumEncoder {
         this.linearOpMode = linearOpMode;
         rP.frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         rP.backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+    }
+    public MecanumEncoder(RobotParameters robotParameters, LinearOpMode linearOpMode, StartPosition startPosition){
+        this.rP = robotParameters;
+        this.linearOpMode = linearOpMode;
+        rP.frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        rP.backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        if (startPosition == StartPosition.FRONT){
+            this.position = new PositionVector(12, 36, 90);
+        }
     }
 
     public void moveInches(Direction direction, double distance, double power){
@@ -128,6 +139,42 @@ public class MecanumEncoder {
         restoreMotorModes();
         sleep(100);
     }
+    public void moveFreely(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
+        setMotorPowers(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+    }
+    public void rotateToAngle(double targetAngle, double power, Direction rotating){
+        switch (rotating){
+            case CW: // clockwise
+                moveFreely(power, -power, power, -power);
+                break;
+            case CCW:  // counter-clockwise
+                moveFreely(-power, power, -power, power);
+                break;
+            default:
+                throw new IllegalArgumentException("Direction must be CW, CCW");
+        }
+        while(
+                !(Math.abs(imu.getAngularOrientation().firstAngle-targetAngle)<(DEGREE_OF_ERROR*power))&&
+                        (linearOpMode.opModeIsActive())
+        ){
+            Thread.yield();
+            linearOpMode.telemetry.update();
+        }
+    }
+    public void newRotateDegrees(double angle, double power, Direction rotation){
+        rotateToAngle(rP.getHeading()+angle, power, rotation);
+    }
+
+    public double angleFix(double angle){
+        while (angle < 0){
+            angle += 360;
+        }
+        while (angle > 360){
+            angle -= 360;
+        }
+        return angle;
+    }
+
     public void strafe(Direction strafing, double distance, double speed){
         storeMotorModes();
         resetEncoders();
@@ -257,4 +304,48 @@ public class MecanumEncoder {
         this.rP.backLeftMotor.setTargetPosition(targetPositionBackLeft);
         this.rP.backRightMotor.setTargetPosition(targetPositionBackRight);
     }
+
+    public void travelTo(PositionVector target, double rotationPower, double travelingPower){
+        double heading = imu.getAngularOrientation().firstAngle;
+        double xpos = imu.getPosition().x;
+        double ypos = imu.getPosition().y;
+        PositionVector initial = new PositionVector(xpos, ypos, heading);
+        double deltaX = target.getXPOS()-xpos;
+        double deltaY = target.getYPOS()-ypos;
+        double deltaDegrees;
+        double targetAngle;
+        if (deltaX<0 && deltaY>0){
+            targetAngle = 180+Math.atan(deltaY/deltaX);
+        } else if (deltaX>0 && deltaY>0){
+            targetAngle = Math.atan(deltaY/deltaX);
+        } else if (deltaX>0 && deltaY<0){
+            targetAngle = 360+Math.atan(deltaX/deltaY);
+        } else {
+            targetAngle = 180+Math.atan(deltaX/deltaY);
+        }
+        deltaDegrees = Math.abs(targetAngle-heading);
+        if (deltaDegrees < 180) {
+            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
+        } else {
+            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
+        }
+        moveInches(Direction.FORWARD, getDistance(deltaX, deltaY), travelingPower);
+        rotateToAngle(target.getHeading(), rotationPower, directionToRotate(target.getHeading()));
+    }
+    public Direction directionToRotate(double targetAngle){
+        double deltaTheta = Math.abs(targetAngle-rP.getHeading());
+        if (deltaTheta < 180) {
+            return Direction.CCW;
+        } else {
+            return Direction.CW;
+        }
+    }
+    public double getDistance(double x1, double y1, double x2, double y2){
+        return Math.sqrt(Math.pow(y1+y2, 2)+Math.pow(x1+x2, 2));
+    }
+    public double getDistance(double x, double y){
+        return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+    }
+
+
 }

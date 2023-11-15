@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 //import org.firstinspires.ftc.teamcode.enums.AllianceSide;
 //import org.firstinspires.ftc.teamcode.enums.ColorSide;
 import org.firstinspires.ftc.teamcode.dependencies.MecanumEncoder;
+import org.firstinspires.ftc.teamcode.dependencies.PositionVector;
 import org.firstinspires.ftc.teamcode.enums.Direction;
 import org.firstinspires.ftc.teamcode.enums.StartPosition;
 import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
@@ -31,7 +32,9 @@ public class FirstCenterStage {
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         RobotParameters rP = new RobotParameters(motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight, 28, 7.5, 60, imu, 10.5);
         MecanumEncoder autoEncoder = new MecanumEncoder(rP, linearOpMode);
-
+        autoEncoder.newRotateDegrees(40,0.5,Direction.CW);
+        autoEncoder.rotateDegrees(Direction.CW,40, 0.5);
+        autoEncoder.travelTo(new PositionVector(24, 24, 60), 0.6, 0.8);
         switch (startPosition) { // Remember that the collection side (no crossbars) is the "back"
             case FRONT:
                 autoEncoder.moveInches(Direction.BACKWARD, 31, 1);

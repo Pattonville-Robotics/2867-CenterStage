@@ -90,7 +90,6 @@ public class MecanumEncoder {
         }
         resetMotorPowers();
         restoreMotorModes();
-
         sleep(100);
     }
 
@@ -132,7 +131,7 @@ public class MecanumEncoder {
         runToPostions();
         setMotorPowers(speed);
 
-        while (areMotorsBusy() || !motorsReachedTarget(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks) && linearOpMode.opModeIsActive()){
+        while (isMoving()){
             Thread.yield();
         }
         resetMotorPowers();
@@ -154,12 +153,13 @@ public class MecanumEncoder {
                 throw new IllegalArgumentException("Direction must be CW, CCW");
         }
         while(
-                !(Math.abs(imu.getAngularOrientation().firstAngle-targetAngle)<(DEGREE_OF_ERROR*power))&&
+                !(Math.abs(this.rP.getHeading()-targetAngle)<(DEGREE_OF_ERROR*power))&&
                         (linearOpMode.opModeIsActive())
         ){
             Thread.yield();
             linearOpMode.telemetry.update();
         }
+        this.position.updateHeading(targetAngle);
     }
     public void newRotateDegrees(double angle, double power, Direction rotation){
         rotateToAngle(rP.getHeading()+angle, power, rotation);
@@ -331,6 +331,7 @@ public class MecanumEncoder {
         }
         moveInches(Direction.FORWARD, getDistance(deltaX, deltaY), travelingPower);
         rotateToAngle(target.getHeading(), rotationPower, directionToRotate(target.getHeading()));
+        this.position.resetPosition(target);
     }
     public Direction directionToRotate(double targetAngle){
         double deltaTheta = Math.abs(targetAngle-rP.getHeading());

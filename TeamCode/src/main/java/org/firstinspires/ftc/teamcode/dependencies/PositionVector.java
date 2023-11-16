@@ -19,4 +19,18 @@ public class PositionVector {
     public double getHeading(){
         return heading;
     }
+    public void resetPosition(PositionVector newPosition){
+        this.xpos = newPosition.getXPOS();
+        this.ypos = newPosition.getYPOS();
+        this.heading = newPosition.getHeading();
+    }
+    public void updateHeading(double newHeading){
+        this.heading = newHeading;
+    }
+    public void updateXPOS(double newXPOS){
+        this.xpos = newXPOS;
+    }
+    public void updateYPOS(double newYPOS){
+        this.xpos = newYPOS;
+    }
 }

@@ -28,7 +28,6 @@ public class FirstCenterStage {
         motorFrontRight = linearOpMode.hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = linearOpMode.hardwareMap.dcMotor.get("backLeft");
         IMU imu = linearOpMode.hardwareMap.get(IMU.class, "imu");
-
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         RobotParameters rP = new RobotParameters(motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight, 28, 7.5, 60, imu, 10.5);

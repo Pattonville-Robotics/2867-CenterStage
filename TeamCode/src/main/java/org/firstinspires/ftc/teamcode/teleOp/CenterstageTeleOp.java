@@ -5,12 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -31,8 +28,8 @@ public class CenterstageTeleOp extends LinearOpMode{
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontRight"); // front left
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("backRight");   // back left
 
-        RevColorSensorV3 cSensor = hardwareMap.get(RevColorSensorV3.class, "colorV3");
-        DistanceSensor cSensor2 = hardwareMap.get(DistanceSensor.class, "colorV2");
+        RevColorSensorV3 cSensorL = hardwareMap.get(RevColorSensorV3.class, "colorV3");
+        RevColorSensorV3 cSensorR = hardwareMap.get(RevColorSensorV3.class, "colorV3");
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
@@ -84,8 +81,8 @@ public class CenterstageTeleOp extends LinearOpMode{
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
-            telemetry.addData("Sensor V2 Distance", cSensor2.getDistance(DistanceUnit.METER));
-            telemetry.addData("Sensor V3 Distance", cSensor.getDistance(DistanceUnit.CM));
+            telemetry.addData("Left Sensor Distance", cSensorL.getDistance(DistanceUnit.CM));
+            telemetry.addData("Right Sensor Distance", cSensorR.getDistance(DistanceUnit.CM));
             telemetry.update();
 
         }

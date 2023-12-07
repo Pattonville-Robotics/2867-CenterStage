@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 //import org.firstinspires.ftc.teamcode.enums.AllianceSide;
 //import org.firstinspires.ftc.teamcode.enums.ColorSide;
@@ -29,9 +28,6 @@ public class FirstCenterStage {
         motorFrontRight = linearOpMode.hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = linearOpMode.hardwareMap.dcMotor.get("backLeft");
         IMU imu = linearOpMode.hardwareMap.get(IMU.class, "imu");
-        ColorSensor cSensor = linearOpMode.hardwareMap.get(ColorSensor.class, "colorV2");
-        ColorSensor cSensor2 = linearOpMode.hardwareMap.get(ColorSensor.class, "colorV3");
-
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         RobotParameters rP = new RobotParameters(motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight, 28, 7.5, 60, imu, 10.5);

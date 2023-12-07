@@ -144,10 +144,10 @@ public class MecanumEncoder {
     public void rotateToAngle(double targetAngle, double power, Direction rotating){
         switch (rotating){
             case CW: // clockwise
-                moveFreely(power, -power, power, -power);
+                moveFreely(-power, power, -power, power);
                 break;
             case CCW:  // counter-clockwise
-                moveFreely(-power, power, -power, power);
+                moveFreely(power, -power, power, -power);
                 break;
             default:
                 throw new IllegalArgumentException("Direction must be CW, CCW");
@@ -159,7 +159,7 @@ public class MecanumEncoder {
             Thread.yield();
             linearOpMode.telemetry.update();
         }
-        this.position.updateHeading(targetAngle);
+        // this.position.updateHeading(targetAngle);
     }
     public void newRotateDegrees(double angle, double power, Direction rotation){
         rotateToAngle(rP.getHeading()+angle, power, rotation);
@@ -305,42 +305,42 @@ public class MecanumEncoder {
         this.rP.backRightMotor.setTargetPosition(targetPositionBackRight);
     }
 
-    public void travelTo(PositionVector target, double rotationPower, double travelingPower){
-        double heading = imu.getAngularOrientation().firstAngle;
-        double xpos = imu.getPosition().x;
-        double ypos = imu.getPosition().y;
-        PositionVector initial = new PositionVector(xpos, ypos, heading);
-        double deltaX = target.getXPOS()-xpos;
-        double deltaY = target.getYPOS()-ypos;
-        double deltaDegrees;
-        double targetAngle;
-        if (deltaX<0 && deltaY>0){
-            targetAngle = 180+Math.atan(deltaY/deltaX);
-        } else if (deltaX>0 && deltaY>0){
-            targetAngle = Math.atan(deltaY/deltaX);
-        } else if (deltaX>0 && deltaY<0){
-            targetAngle = 360+Math.atan(deltaX/deltaY);
-        } else {
-            targetAngle = 180+Math.atan(deltaX/deltaY);
-        }
-        deltaDegrees = Math.abs(targetAngle-heading);
-        if (deltaDegrees < 180) {
-            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
-        } else {
-            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
-        }
-        moveInches(Direction.FORWARD, getDistance(deltaX, deltaY), travelingPower);
-        rotateToAngle(target.getHeading(), rotationPower, directionToRotate(target.getHeading()));
-        this.position.resetPosition(target);
-    }
-    public Direction directionToRotate(double targetAngle){
-        double deltaTheta = Math.abs(targetAngle-rP.getHeading());
-        if (deltaTheta < 180) {
-            return Direction.CCW;
-        } else {
-            return Direction.CW;
-        }
-    }
+//    public void travelTo(PositionVector target, double rotationPower, double travelingPower){
+//        double heading = imu.getAngularOrientation().firstAngle;
+//        double xpos = imu.getPosition().x;
+//        double ypos = imu.getPosition().y;
+//        PositionVector initial = new PositionVector(xpos, ypos, heading);
+//        double deltaX = target.getXPOS()-xpos;
+//        double deltaY = target.getYPOS()-ypos;
+//        double deltaDegrees;
+//        double targetAngle;
+//        if (deltaX<0 && deltaY>0){
+//            targetAngle = 180+Math.atan(deltaY/deltaX);
+//        } else if (deltaX>0 && deltaY>0){
+//            targetAngle = Math.atan(deltaY/deltaX);
+//        } else if (deltaX>0 && deltaY<0){
+//            targetAngle = 360+Math.atan(deltaX/deltaY);
+//        } else {
+//            targetAngle = 180+Math.atan(deltaX/deltaY);
+//        }
+//        deltaDegrees = Math.abs(targetAngle-heading);
+//        if (deltaDegrees < 180) {
+//            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
+//        } else {
+//            rotateToAngle(targetAngle, rotationPower, directionToRotate(targetAngle));
+//        }
+//        moveInches(Direction.FORWARD, getDistance(deltaX, deltaY), travelingPower);
+//        rotateToAngle(target.getHeading(), rotationPower, directionToRotate(target.getHeading()));
+//        this.position.resetPosition(target);
+//    }
+//    public Direction directionToRotate(double targetAngle){
+//        double deltaTheta = Math.abs(targetAngle-rP.getHeading());
+//        if (deltaTheta < 180) {
+//            return Direction.CCW;
+//        } else {
+//            return Direction.CW;
+//        }
+//    }
     public double getDistance(double x1, double y1, double x2, double y2){
         return Math.sqrt(Math.pow(y1+y2, 2)+Math.pow(x1+x2, 2));
     }

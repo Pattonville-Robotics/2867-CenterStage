@@ -62,9 +62,9 @@ public class CenterstageTeleOp extends LinearOpMode{
             }
             float lsPower = 0;
             if (gamepad1.left_bumper) {
-                lsPower = -0.5f;
+                lsPower = -0.6f;
             } else if (gamepad1.right_bumper) {
-                lsPower = 0.5f;
+                lsPower = 0.6f;
             }
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 

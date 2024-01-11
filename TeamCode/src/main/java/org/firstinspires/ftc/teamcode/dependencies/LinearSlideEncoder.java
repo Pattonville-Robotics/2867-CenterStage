@@ -47,6 +47,12 @@ public class LinearSlideEncoder {
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void makeRobotHang(float magnitude){
+        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+        motor.setPower(magnitude);
+        motor2.setPower(0);
+    }
+
     public void analogMoveSlide(float magnitude) {
         // if slide is going above upper bound (3rd junction height), stop and return early. only stop if slide is moving up.
 //        if ((motor.getCurrentPosition() >= LinearPosition.THREE.ticks) && (magnitude > 0)) return;
@@ -55,11 +61,16 @@ public class LinearSlideEncoder {
             if ((motor.getCurrentPosition() <= LinearPosition.ZERO.ticks) && (magnitude < 0))
                 return;
             // (control hub side) pulls the slide up
-            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
-            motor.setPower(magnitude);
+            if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
+                motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+                motor.setPower(magnitude);
+            }
             // (battery side) pulls the slide down
-            motor2.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 80)));
-            motor2.setPower(magnitude);
+            if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
+                motor2.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 80)));
+                motor2.setPower(magnitude);
+            }
+
         } else {
             // Holds the current position at max power when not moving
             motor.setTargetPosition(motor.getCurrentPosition());

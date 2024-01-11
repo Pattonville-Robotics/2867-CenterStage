@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.dependencies.AprilTagDetectionPipeline;
 import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class CenterstageTeleOp extends LinearOpMode{
+    boolean hanging = false;
     @Override
     public void runOpMode() throws InterruptedException{
         // Declare our motors
@@ -66,6 +67,10 @@ public class CenterstageTeleOp extends LinearOpMode{
             } else if (gamepad1.right_bumper) {
                 lsPower = 0.6f;
             }
+            if (gamepad1.b){
+                lsPower = 0.6f;
+                hanging = !hanging;
+            }
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
             // Rotate the movement direction counter to the bot's rotation
@@ -88,7 +93,11 @@ public class CenterstageTeleOp extends LinearOpMode{
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
-            slide.analogMoveSlide(lsPower);
+            if (hanging){
+                slide.makeRobotHang(lsPower);
+            } else {
+                slide.analogMoveSlide(lsPower);
+            }
 
             telemetry.addData("Left Sensor Distance", cSensorL.getDistance(DistanceUnit.INCH));
             telemetry.addData("Right Sensor Distance", cSensorR.getDistance(DistanceUnit.INCH));

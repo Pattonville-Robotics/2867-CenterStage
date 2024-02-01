@@ -9,6 +9,9 @@ public class LinearSlidesEncoder {
     private RobotParameters rP;
     private DcMotor linearSlideMotor;
     private Servo claw;
+
+    private Servo leftHand;
+    private Servo rightHand;
     private LinearOpMode linearOp;
     public LinearPosition currentLinearPosition = LinearPosition.ZERO;
     public boolean isOpen = true;
@@ -27,7 +30,7 @@ public class LinearSlidesEncoder {
         LinearPosition(int i){this.ticks = i;}
     }
 
-    public LinearSlidesEncoder(DcMotor linearSlideMotor, Servo claw, LinearOpMode linearOp){
+    public LinearSlidesEncoder(DcMotor linearSlideMotor, Servo claw, LinearOpMode linearOp, Servo leftHand, Servo rightHand){
         this.linearSlideMotor = linearSlideMotor;
         this.claw = claw;
         this.linearOp = linearOp;
@@ -65,3 +68,5 @@ public class LinearSlidesEncoder {
     }
     public void sleep(long milli){linearOp.sleep(milli);}
 }
+
+

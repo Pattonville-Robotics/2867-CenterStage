@@ -59,24 +59,24 @@ public class CenterstageTeleOp extends LinearOpMode{
             double rx = -gamepad1.right_stick_x;
             double powerMult = 0.5 + 0.5 * gamepad1.right_trigger;
             double position = 0;
-            if (gamepad1.a) {
-                imu.resetYaw();
-            }
+//            if (gamepad1.a) {
+//                imu.resetYaw();
+//            }
             float lsPower = 0;
-            if (gamepad1.left_bumper) {
+            if (gamepad1.x) {
                 lsPower = -1f;
-            } else if (gamepad1.right_bumper) {
+            } else if (gamepad1.y) {
                 lsPower = 1f;
             }
-            if (gamepad1.x) {
+            if (gamepad1.a) {
                 hanging = false;
             }
             if (gamepad1.b) {
                 hanging = true;
             }
-            if(gamepad1.dpad_up) {
+            if(gamepad1.left_bumper) {
                 intake.rotateServos(0.7);
-            } else if(gamepad1.dpad_down) {
+            } else if(gamepad1.right_bumper) {
                 intake.rotateServos(-0.7);
             } else {
                 intake.rotateServos(0);

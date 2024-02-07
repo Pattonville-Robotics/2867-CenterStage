@@ -37,7 +37,7 @@ import org.openftc.apriltag.AprilTagPose;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
-
+// Not currently used, keeping in case we make it to State
 public class AprilTagDetectionPipeline extends OpenCvPipeline
 {
     private long nativeApriltagPtr;

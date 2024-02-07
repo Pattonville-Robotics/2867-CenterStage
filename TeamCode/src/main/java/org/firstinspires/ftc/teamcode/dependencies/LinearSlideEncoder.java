@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.dependencies;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class LinearSlideEncoder {
@@ -30,12 +29,7 @@ public class LinearSlideEncoder {
     // Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
         ZERO(10),
-        ONE(1400),
-        TWO(2300),
-        THREE(3200),
-        CONE1(700),
-        CONE2(120),
-        CONE3(180);
+        MAX(10000);
         private final int ticks;
         LinearPosition(int i) {this.ticks = i;}
     }
@@ -48,7 +42,7 @@ public class LinearSlideEncoder {
     }
 
     public void makeRobotHang(float magnitude){
-        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 320)));
         motor.setPower(magnitude);
         motor2.setPower(0);
     }
@@ -58,18 +52,20 @@ public class LinearSlideEncoder {
 //        if ((motor.getCurrentPosition() >= LinearPosition.THREE.ticks) && (magnitude > 0)) return;
         if (magnitude != 0) {
             // Disallows movement past the lower bound
-            if ((motor.getCurrentPosition() <= LinearPosition.ZERO.ticks) && (magnitude < 0))
+            boolean slideAtBottom = (motor.getCurrentPosition() <= LinearPosition.ZERO.ticks) && (magnitude < 0);
+            boolean slideAtTop = (motor.getCurrentPosition() >= LinearPosition.MAX.ticks) && (magnitude > 0);
+            if (slideAtBottom || slideAtTop)
                 return;
             // (control hub side) pulls the slide up
-            if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
-                motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
-                motor.setPower(magnitude);
-            }
+            //if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
+            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+            motor.setPower(magnitude);
+            //}
             // (battery side) pulls the slide down
-            if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
-                motor2.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 80)));
-                motor2.setPower(magnitude);
-            }
+            //if (motor.getCurrentPosition() + 315 < motor2.getCurrentPosition()) {
+            motor2.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 80)));
+            motor2.setPower(magnitude);
+            //}
 
         } else {
             // Holds the current position at max power when not moving
@@ -81,10 +77,10 @@ public class LinearSlideEncoder {
         analogPos = motor.getCurrentPosition();
     }
 
-    public void setPower(double p){
-        motor.setPower(p);
-        motor2.setPower(p);
-    }
+//    public void setPower(double p){
+//        motor.setPower(p);
+//        motor2.setPower(p);
+//    }
 
     public double getPower(){
         return motor.getPower();

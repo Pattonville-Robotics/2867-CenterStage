@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.enums.StartPosition;
 
 @Autonomous(name="Front Auto", group="Autonomous")
 
-public class FrontAutonomous extends LinearOpMode{
+public class FrontAutonomous extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         waitForStart();
         FirstCenterStage.run(this, StartPosition.FRONT);
     }

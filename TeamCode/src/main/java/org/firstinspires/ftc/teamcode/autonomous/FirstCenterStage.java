@@ -98,17 +98,17 @@ public class FirstCenterStage {
                 autoEncoder.moveInches(Direction.LEFT, 2, 1);
                 autoEncoder.moveInches(Direction.BACKWARD, 26, 1);
 
-                autoEncoder.moveInches(Direction.LEFT, 2, 1);
+                autoEncoder.moveInches(Direction.LEFT, 1, 1);
 
                 Left1 = cSensorL.getDistance(DistanceUnit.CM);
                 Right1 = cSensorR.getDistance(DistanceUnit.CM);
 
-                autoEncoder.moveInches(Direction.RIGHT, 4, 1);
+                autoEncoder.moveInches(Direction.RIGHT, 2, 1);
 
                 Left2 = cSensorL.getDistance(DistanceUnit.CM);
                 Right2 = cSensorR.getDistance(DistanceUnit.CM);
 
-                autoEncoder.moveInches(Direction.LEFT, 2, 1);
+                autoEncoder.moveInches(Direction.LEFT, 1, 1);
 
                 if (Left1 < 5 && Right1 > 5){
                     autoEncoder.moveInches(Direction.LEFT, 15, 1);

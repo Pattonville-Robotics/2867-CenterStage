@@ -14,10 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.dependencies.IntakeServoEncoder;
 import org.firstinspires.ftc.teamcode.dependencies.LinearSlideEncoder;
-import org.firstinspires.ftc.teamcode.dependencies.AprilTagDetectionPipeline;
-
-import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class CenterstageTeleOp extends LinearOpMode{
     boolean hanging = false;
@@ -30,10 +28,8 @@ public class CenterstageTeleOp extends LinearOpMode{
         DcMotor motorBackRight = hardwareMap.dcMotor.get("backLeft");   // back right
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontRight"); // front left
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("backRight");// back left
-        Servo servoRightHand = hardwareMap.servo.get("armServoHubSide");
-        Servo servoLeftHand = hardwareMap.servo.get("armServoBatSide");
         LinearSlideEncoder slide = new LinearSlideEncoder(this);
-
+        IntakeServoEncoder intake = new IntakeServoEncoder(this);
 
         RevColorSensorV3 cSensorL = hardwareMap.get(RevColorSensorV3.class, "cSensorL");
         RevColorSensorV3 cSensorR = hardwareMap.get(RevColorSensorV3.class, "cSensorR");
@@ -55,7 +51,6 @@ public class CenterstageTeleOp extends LinearOpMode{
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-        servoLeftHand.setDirection(Servo.Direction.REVERSE);
 
         waitForStart();
         while (opModeIsActive()){
@@ -73,28 +68,20 @@ public class CenterstageTeleOp extends LinearOpMode{
             } else if (gamepad1.right_bumper) {
                 lsPower = 1f;
             }
-            if (gamepad1.x){
+            if (gamepad1.x) {
                 hanging = false;
             }
-            if (gamepad1.b){
+            if (gamepad1.b) {
                 hanging = true;
             }
-            if(gamepad1.dpad_up){
-                position += .01;
-                if(position > 1){
-                    position = 1;
-                }
-                servoRightHand.setPosition(position);
-                servoLeftHand.setPosition(position);
+            if(gamepad1.dpad_up) {
+                intake.rotateServos(0.7);
+            } else if(gamepad1.dpad_down) {
+                intake.rotateServos(-0.7);
+            } else {
+                intake.rotateServos(0);
             }
-            if(gamepad1.dpad_down){
-                position -= .01;
-                if(position < 0){
-                    position = 0;
-                }
-                servoRightHand.setPosition(position);
-                servoLeftHand.setPosition(position);
-            }
+
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
             // Rotate the movement direction counter to the bot's rotation
@@ -116,8 +103,6 @@ public class CenterstageTeleOp extends LinearOpMode{
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
-
-
 
             if (hanging) {
                 slide.analogMoveSlide(-1f);

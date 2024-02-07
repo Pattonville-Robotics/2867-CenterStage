@@ -16,14 +16,12 @@ public class TestTeleOp extends LinearOpMode{
         DcMotor motorBackRight = hardwareMap.dcMotor.get("backLeft");   // back right
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("frontRight"); // front left
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("backRight");   // back left
-        Servo servoLeftHand = hardwareMap.servo.get("armSeveroHubSide");
-        Servo servoRightHand = hardwareMap.servo.get("armSeveroBatSide");
         Servo hubSideIntake = hardwareMap.servo.get("hubSideIntake");
         Servo batSideIntake = hardwareMap.servo.get("batSideIntake");
 
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-        servoLeftHand.setDirection(Servo.Direction.REVERSE);
+        batSideIntake.setDirection(Servo.Direction.REVERSE);
         waitForStart();
         while (opModeIsActive()){
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
@@ -39,28 +37,28 @@ public class TestTeleOp extends LinearOpMode{
             double frontRightPower = (Math.pow((y - x - rx),3) * 0.4) / denominator;
             double backRightPower = -(Math.pow((y + x - rx),3) * 0.4) / denominator;
             double position = 0;
+            double deltaPosition = .1;
             motorFrontLeft.setPower(frontLeftPower);
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
             if(gamepad1.dpad_up){
-                position += .01;
-                if(position > 1){
-                    position = 1;
-                }
-                servoRightHand.setPosition(position);
-                servoLeftHand.setPosition(position);
+                deltaPosition = -.1;
             }
             if(gamepad1.dpad_down){
-                position -= .01;
-                if(position < 0){
-                    position = 0;
-                }
-                servoRightHand.setPosition(position);
-                servoLeftHand.setPosition(position);
+                deltaPosition = .1;
             }
 
+            position += deltaPosition;
+            if (position > 1){
+                position = 0;
+            }
+            else if (position < 0){
+                position = 1;
+            }
+            hubSideIntake.setPosition(position);
+            batSideIntake.setPosition(position);
         }
     }
 }

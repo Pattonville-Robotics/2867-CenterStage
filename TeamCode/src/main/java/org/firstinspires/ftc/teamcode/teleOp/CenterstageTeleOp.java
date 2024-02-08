@@ -75,9 +75,9 @@ public class CenterstageTeleOp extends LinearOpMode{
                 hanging = true;
             }
             if(gamepad1.left_bumper) {
-                intake.rotateServos(0.7);
-            } else if(gamepad1.right_bumper) {
                 intake.rotateServos(-0.7);
+            } else if(gamepad1.right_bumper) {
+                intake.rotateServos(0.7);
             } else {
                 intake.rotateServos(0);
             }

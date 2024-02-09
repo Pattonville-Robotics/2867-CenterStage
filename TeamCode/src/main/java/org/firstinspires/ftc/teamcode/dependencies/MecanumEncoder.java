@@ -52,13 +52,13 @@ public class MecanumEncoder {
         int backRightTicks = 0;
 
         switch (direction){
-            case FORWARD:
+            case BACKWARD:
                 frontLeftTicks = ticksToTravel;
                 frontRightTicks = ticksToTravel;
                 backLeftTicks = ticksToTravel;
                 backRightTicks = ticksToTravel;
                 break;
-            case BACKWARD:
+            case FORWARD:
                 frontLeftTicks = -ticksToTravel;
                 frontRightTicks = -ticksToTravel;
                 backLeftTicks = -ticksToTravel;
@@ -243,7 +243,7 @@ public class MecanumEncoder {
         backRightMode = rP.backRightMotor.getMode();
     }
     public double degreesToInches(double degrees){
-        return (this.rP.wheelBaseCircumference) * (degrees/360);
+        return (this.rP.wheelBaseCircumference * (degrees/360)) * 1.35;
     }
     public int inchesToTicks(double inches){                                                       // constant required for distances to be correct
         return (int)((inches / this.rP.wheelCircumference) * this.rP.ticks * this.rP.driveGearRatio * 8/5);

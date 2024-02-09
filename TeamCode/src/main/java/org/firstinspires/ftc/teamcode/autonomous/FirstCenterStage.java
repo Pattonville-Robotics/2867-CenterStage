@@ -95,17 +95,17 @@ public class FirstCenterStage {
             case BACKSTAGE_RED: // temporarily set to push 2 pixels to the score zone and park
                 placePurplePixel(linearOpMode, autoEncoder, intake, cSensorL, cSensorR);
                 autoEncoder.rotateDegrees(Direction.CW, 90, 1);
-                autoEncoder.moveInches(Direction.FORWARD, 32, 1);
-                intake.rotateServos(0.5);
-                autoEncoder.moveInches(Direction.BACKWARD, 5, 1);
+                autoEncoder.moveInches(Direction.FORWARD, 44, 1);
+                intake.rotateServos(0.4);
+                autoEncoder.moveInches(Direction.BACKWARD, 8, 1);
                 intake.rotateServos(0);
                 break;
             case BACKSTAGE_BLUE: // same as above just to mitigate confusion
                 placePurplePixel(linearOpMode, autoEncoder, intake, cSensorL, cSensorR);
                 autoEncoder.rotateDegrees(Direction.CCW, 90, 1);
-                autoEncoder.moveInches(Direction.FORWARD, 32, 1);
-                intake.rotateServos(0.5);
-                autoEncoder.moveInches(Direction.BACKWARD, 5, 1);
+                autoEncoder.moveInches(Direction.FORWARD, 44, 1);
+                intake.rotateServos(0.4);
+                autoEncoder.moveInches(Direction.BACKWARD, 8, 1);
                 intake.rotateServos(0);
                 break;
             default:
